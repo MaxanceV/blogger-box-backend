@@ -12,7 +12,4 @@ public class CategoryRequest {
         this.name = name;
     }
 
-
-
-
 }
