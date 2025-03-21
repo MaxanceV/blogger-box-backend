@@ -1,4 +1,4 @@
-package com.dauphine.blogger.box.backend;
+package com.dauphine.bloggerboxbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
