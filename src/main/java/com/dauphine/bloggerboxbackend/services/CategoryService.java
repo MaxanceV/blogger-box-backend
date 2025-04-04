@@ -10,49 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Service
-public class CategoryService {
 
-    private final List<Category> categories;
+public interface CategoryService {
 
-    public CategoryService() {
-        this.categories = new ArrayList<Category>();
-    }
 
-    public List<Category> getAll(){
-        return categories;
-    }
+    public List<Category> getAll();
 
-    public Category getById(UUID id){
-        Category ret = null;
-        for(Category category : categories){
-            if(category.getUuid().equals(id)){
-                ret = category;
-            }
-        }
-        return ret;
-    }
+    public Category getById(UUID id);
 
-    public Category create(CategoryRequest categoryRequest){
-        Category category = new Category();
-        category.setName(categoryRequest.getName());
-        category.setUuid(UUID.randomUUID());
-        categories.add(category);
-        return category;
-    }
+    public Category create(String name);
 
-    public Category update(UUID id, String name){
-        Category ret = getById(id);
-        ret.setName(name);
-        return ret;
-    }
+    public Category update(UUID id, String name);
 
-    public UUID deleteCategory(UUID id){
-        if(!categories.contains(getById(id))){
-            return null;
-        }
-        categories.remove(getById(id));
-        return id;
-    }
+    public boolean deleteCategory(UUID id);
 
 }

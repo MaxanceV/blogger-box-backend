@@ -1,11 +1,8 @@
 package com.dauphine.bloggerboxbackend.controllers;
 
-import com.dauphine.bloggerboxbackend.dto.CategoryRequest;
 import com.dauphine.bloggerboxbackend.dto.PostRequest;
-import com.dauphine.bloggerboxbackend.models.Category;
 import com.dauphine.bloggerboxbackend.models.Post;
-import com.dauphine.bloggerboxbackend.services.CategoryService;
-import com.dauphine.bloggerboxbackend.services.PostService;
+import com.dauphine.bloggerboxbackend.services.PostServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +17,9 @@ import java.util.UUID;
 @RequestMapping("/v1/posts")
 public class PostController {
 
-    private final PostService postService;
+    private final PostServiceImpl postService;
 
-    public PostController(PostService postService) {
+    public PostController(PostServiceImpl postService) {
         this.postService = postService;
     }
 
@@ -47,7 +44,7 @@ public class PostController {
     }
 
     @DeleteMapping("{id}")
-    public UUID deleteCategory(@PathVariable UUID id){
+    public boolean deleteCategory(@PathVariable UUID id){
         return postService.deletePost(id);
     }
 

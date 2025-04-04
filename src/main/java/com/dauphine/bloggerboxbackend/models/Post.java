@@ -1,20 +1,40 @@
 package com.dauphine.bloggerboxbackend.models;
 
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
+@Table(name = "post")
 public class Post {
+
+    @Id
+    @Column(name = "id")
     private UUID uuid;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "content")
     private String content;
-    private Date created_date;
+
+    @Column(name = "created_date")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime createdDate;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    public Post(UUID uuid, String title, String content, Date created_date, Category category) {
-        this.uuid = uuid;
+    public Post(String title,
+                String content,
+                Category category) {
+        this.uuid = UUID.randomUUID();
         this.title = title;
         this.content = content;
-        this.created_date = created_date;
+        this.createdDate = LocalDateTime.now();
         this.category = category;
     }
 
@@ -44,12 +64,12 @@ public class Post {
         this.content = content;
     }
 
-    public Date getCreated_date() {
-        return created_date;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date(Date created_date) {
-        this.created_date = created_date;
+    public void setCreatedDate(LocalDateTime created_date) {
+        this.createdDate = created_date;
     }
 
     public Category getCategory() {
