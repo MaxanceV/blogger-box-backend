@@ -25,8 +25,13 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAll(){
-        return categoryService.getAll();
+    public List<Category> getAll(@RequestParam(required = false) String name){
+        if(name == null){
+            return categoryService.getAll();
+        } else {
+            return categoryService.getAllByName(name);
+        }
+
     }
 
     @GetMapping("{id}")
@@ -45,7 +50,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("{id}")
-    public UUID deleteCategory(@PathVariable UUID id){
+    public boolean deleteCategory(@PathVariable UUID id){
         return categoryService.deleteCategory(id);
     }
 

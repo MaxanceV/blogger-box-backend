@@ -28,8 +28,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElse(null);
     }
 
-    public Category create(String name){
-        Category category = new Category(name);
+    public Category create(CategoryRequest categoryRequest){
+        Category category = new Category(categoryRequest.getName());
         return repository.save(category);
     }
 
@@ -45,5 +45,10 @@ public class CategoryServiceImpl implements CategoryService {
     public boolean deleteCategory(UUID id){
         repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<Category> getAllByName(String name) {
+        return repository.findAllByName(name);
     }
 }

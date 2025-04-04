@@ -18,10 +18,11 @@ public interface CategoryService {
 
     public Category getById(UUID id);
 
-    public Category create(String name);
+    public Category create(CategoryRequest categoryRequest);
 
     public Category update(UUID id, String name);
 
     public boolean deleteCategory(UUID id);
 
+    public List<Category> getAllByName(String name);
 }

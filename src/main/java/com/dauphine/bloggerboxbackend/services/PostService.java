@@ -27,4 +27,5 @@ public interface PostService {
 
     public List<Post> getAllByCategory(UUID categoryId);
 
+    List<Post> getAllByValue(String value);
 }

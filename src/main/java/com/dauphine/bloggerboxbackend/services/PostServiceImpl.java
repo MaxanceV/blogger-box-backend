@@ -11,7 +11,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class PostServiceImpl {
+public class PostServiceImpl implements PostService {
 
     private final CategoryService categoryService;
     private final PostRepository repository;
@@ -65,4 +65,7 @@ public class PostServiceImpl {
                 .collect(Collectors.toList());
     }
 
+    public List<Post> getAllByValue(String value) {
+        return repository.findAllByValue(value);
+    }
 }

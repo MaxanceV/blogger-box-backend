@@ -2,6 +2,7 @@ package com.dauphine.bloggerboxbackend.controllers;
 
 import com.dauphine.bloggerboxbackend.dto.PostRequest;
 import com.dauphine.bloggerboxbackend.models.Post;
+import com.dauphine.bloggerboxbackend.services.PostService;
 import com.dauphine.bloggerboxbackend.services.PostServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +18,19 @@ import java.util.UUID;
 @RequestMapping("/v1/posts")
 public class PostController {
 
-    private final PostServiceImpl postService;
+    private final PostService postService;
 
-    public PostController(PostServiceImpl postService) {
+    public PostController(PostService postService) {
         this.postService = postService;
     }
 
     @GetMapping
-    public List<Post> getAll(){
-        return postService.getAll();
+    public List<Post> getAll(@RequestParam(required = false) String value){
+        if(value == null){
+            return postService.getAll();
+        } else {
+            return postService.getAllByValue(value);
+        }
     }
 
     @GetMapping("{id}")
