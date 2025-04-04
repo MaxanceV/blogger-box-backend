@@ -11,6 +11,13 @@ import java.util.UUID;
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
     @Query("""
+           SELECT CASE WHEN COUNT(p) > 0 THEN TRUE ELSE FALSE END
+           FROM Post p
+           WHERE UPPER(p.title) = UPPER(:title)
+           """)
+    boolean existsByTitle(@Param("title") String title);
+
+    @Query("""
            SELECT post
            FROM Post post
            WHERE UPPER(post.title) LIKE UPPER(CONCAT('%', :value , '%')) OR UPPER(post.content) LIKE UPPER(CONCAT('%', :value , '%'))

@@ -1,6 +1,9 @@
 package com.dauphine.bloggerboxbackend.services;
 
 import com.dauphine.bloggerboxbackend.dto.CategoryRequest;
+import com.dauphine.bloggerboxbackend.exception.CategoryAlreadyExistException;
+import com.dauphine.bloggerboxbackend.exception.CategoryNameNotFoundException;
+import com.dauphine.bloggerboxbackend.exception.CategoryNotFoundByIdException;
 import com.dauphine.bloggerboxbackend.models.Category;
 import com.dauphine.bloggerboxbackend.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
@@ -25,19 +28,24 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Category getById(UUID id){
         return repository.findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new CategoryNotFoundByIdException(id));
     }
 
-    public Category create(CategoryRequest categoryRequest){
+    @Override
+    public Category create(CategoryRequest categoryRequest) {
+        if (repository.existsByName(categoryRequest.getName())) {
+            throw new CategoryAlreadyExistException(categoryRequest.getName());
+        }
         Category category = new Category(categoryRequest.getName());
         return repository.save(category);
     }
 
     public Category update(UUID id, String name){
         Category category = getById(id);
-        if(category == null){
-            return null;
+        if (repository.existsByName(name) && !category.getName().equalsIgnoreCase(name)) {
+            throw new CategoryAlreadyExistException(name);
         }
+
         category.setName(name);
         return repository.save(category);
     }
@@ -49,6 +57,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAllByName(String name) {
-        return repository.findAllByName(name);
-    }
+        List<Category> results = repository.findAllByName(name);
+        if (results.isEmpty()) {
+            throw new CategoryNameNotFoundException(name);
+        }
+        return results;}
 }
